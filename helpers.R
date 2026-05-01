@@ -1,3 +1,22 @@
+get_script_dir <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- "--file="
+  
+  # Check if run via Rscript
+  match <- grep(file_arg, args)
+  if (length(match) > 0) {
+    return(dirname(normalizePath(sub(file_arg, "", args[match]))))
+  }
+  
+  # Check if run in RStudio
+  if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
+    return(dirname(rstudioapi::getSourceEditorContext()$path))
+  }
+  
+  # Fallback for source()
+  return(dirname(normalizePath(sys.frames()[[1]]$ofile)))
+}
+
 get_lst_depth = function(this, this_depth=0) {
   if (is.data.frame(this) | !(is.list(this))) {
     return(this_depth)
