@@ -3,9 +3,15 @@ library(viridis)
 library(ggpointdensity)
 library(ggExtra)
 
-prop_uncons_rmc_transcript = read_table(paste0(data_dir, "prop_uncons_per_rmc_transcript.tsv.bgz"))
-prop_uncons_no_rmc_transcript = read_table(paste0(data_dir, "prop_uncons_per_transcript_no_rmc.tsv.bgz"))
-prop_uncons_section = read_table(paste0(data_dir, "prop_uncons_per_rmc_section.tsv.bgz"))
+source(file.path(dirname(normalizePath(
+  c(sub("--file=", "", grep("--file=", commandArgs(FALSE), value = TRUE)),
+    tryCatch(rstudioapi::getSourceEditorContext()$path, error = function(e) NULL),
+    tryCatch(sys.frames()[[1]]$ofile, error = function(e) NULL))[1]
+)), "utils.R"), chdir = TRUE)
+
+prop_uncons_rmc_transcript = read_table(paste0(data_dir, "/prop_uncons_per_rmc_transcript.tsv.bgz"))
+prop_uncons_no_rmc_transcript = read_table(paste0(data_dir, "/prop_uncons_per_transcript_no_rmc.tsv.bgz"))
+prop_uncons_section = read_table(paste0(data_dir, "/prop_uncons_per_rmc_section.tsv.bgz"))
 
 # Panel a) All transcripts, OE/phyloP at transcript level
 # Spearman rho : 0.4982611; p < 1e-50
